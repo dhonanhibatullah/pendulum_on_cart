@@ -15,7 +15,7 @@ class PocGraphic:
         self.SCREEN_HEIGHT      = 450
         self.SCREEN_CENTER_X    = self.SCREEN_WIDTH//2
         self.SCREEN_CENTER_Y    = self.SCREEN_HEIGHT//2
-        self.SCREEN_SCALE       = 38
+        self.SCREEN_SCALE       = 34
         self.BG_COLOR           = (0, 0, 0)
         self.FPS                = 60
         self.CART_WIDTH         = 70

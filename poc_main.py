@@ -72,11 +72,16 @@ KP  = 1.0
 KI  = 1.0
 eta = 8.0
 k   = 0.0
-centerize = False
+centerize   = False
+last_x1     = 0.0
+last_t      = 0.0
+eta_x1      = 2.0
 
 
 def calcControlLaw(x:np.ndarray, time:float) -> float:
     global centerize
+    global last_x1
+    global last_t
 
     # Get the states
     x1 = x[0].item()
@@ -88,16 +93,23 @@ def calcControlLaw(x:np.ndarray, time:float) -> float:
     # Calculate control law
     theta, theta_dot, theta_ddot = calcTrajectory(time)
     # if (time < eta or not np.fabs(x1) < 0.1) and not centerize:
-    if (time < eta or not np.fabs(x4) < 0.1) and not centerize:
+    if (time < eta - 4) and not centerize:
         v   = theta_ddot + KP*(theta - x3) + KI*(theta_dot - x4)
         c1  = (mp*l)/(k1*np.cos(x3))
         c2  = ((1.0 - k1*k2*(np.cos(x3)**2.0))/k2)*v
         c3  = 0.5*k1*np.sin(2.0*x3)*(x4**2.0)
         c4  = g*np.sin(x3)
-        u   = c1*(c2 + c3 + c4)
+        u   = np.clip(c1*(c2 + c3 + c4), -150, 150)
+        last_x1 = x1
+        last_t  = time
     else:
         centerize = True
-        u = -(K@np.array([[x1], [x2], [x3 - np.pi], [x4]]))[0].item()
+        t   = time - last_t
+        if t > eta_x1:
+            x1 = x1
+        else:
+            x1  = x1 - (eta_x1 - t)*last_x1/eta_x1
+        u   = -(K@np.array([[x1], [x2], [x3 - np.pi], [x4]]))[0].item()
     return u
 
 
@@ -119,7 +131,8 @@ x3_his      = []
 x4_his      = []
 u_his       = []
 time_his    = []
-for i in range(3000):
+
+for i in range(900):
     
     # Get current state
     time    = poc_simulator.getSimulationTime()

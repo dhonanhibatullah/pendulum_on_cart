@@ -24,8 +24,8 @@ class PocSimulator:
         self.k2 = (self.pole_mass*self.pole_length)/(self.pole_mass*(self.pole_length**2.0) + self.pole_inert)
         self.bm = 0.05 + 0.1*np.random.rand()
         self.bp = 0.05 + 0.1*np.random.rand()
-        self.bm = 0
-        self.bp = 0
+        # self.bm = 0
+        # self.bp = 0
 
 
 
