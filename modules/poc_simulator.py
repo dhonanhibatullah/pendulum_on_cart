@@ -72,9 +72,10 @@ class PocSimulator:
     def stepSimulation(self, input:float) -> None:
         
         # Calculate next iteration with RK4
-        rk1         = self.stateEquation(self.state, input)
-        rk2         = self.stateEquation(self.state + rk1*self.dt/2.0, input)
-        rk3         = self.stateEquation(self.state + rk2*self.dt/2.0, input)
-        rk4         = self.stateEquation(self.state + rk3*self.dt, input)
+        u           = input + 1*(np.random.rand()*2.0 - 1.0)
+        rk1         = self.stateEquation(self.state, u)
+        rk2         = self.stateEquation(self.state + rk1*self.dt/2.0, u)
+        rk3         = self.stateEquation(self.state + rk2*self.dt/2.0, u)
+        rk4         = self.stateEquation(self.state + rk3*self.dt, u)
         self.state  = self.state + self.dt*(rk1 + 2.0*rk2 + 2.0*rk3 + rk4)/6.0
         self.time   += self.dt

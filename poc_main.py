@@ -9,8 +9,8 @@ import control as ct
 # Initial value and parameters
 state_init = np.array([
     [0.0],
-    [0.0],
-    [0.0],
+    [0.2*np.random.rand()],
+    [0.4*np.random.rand()],
     [0.0]
 ])
 timestep = 0.016667
